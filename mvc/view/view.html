@@ -1,0 +1,53 @@
+<html>
+    <head> 
+        <title>MVC(User Interface)</title> 
+    </head> 
+<body> 
+
+  <!--search javascript-->
+<script>
+  
+function doSearch () {
+
+  //get search term
+  var data = new FormData();
+  data.append("search", document.getElementById("search").value);
+
+  //AJAX - use HTTP:// NOT FILE://
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "../controller/controller.php");
+  xhr.onload = function(){
+    let results = document.getElementById("results"),
+    search = JSON.parse(this.response);
+    results.innerHTML = "";
+    if (search !== null) { for (let s of search) {
+      results.innerHTML += `
+      <div>
+      <table cellpadding=10 border=1>
+      <tr>
+      <td width=20>${s.id}</td>
+      <td width=150>${s.name}</td>
+      </tr>
+      </table> 
+      </div>`;
+    }}
+  };
+  xhr.send(data);
+  return false;
+}
+</script>
+
+<!--search form-->
+<form onsubmit="return doSearch()">
+  <input type="text" id="search" required/>
+  <input type="submit" />
+</form>
+ 
+<!--search results-->
+<div id="results"></div>
+
+</body> 
+</html> 
+
+
+
